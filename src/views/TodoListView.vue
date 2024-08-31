@@ -13,6 +13,7 @@ const apiKeyAuth = {
     Authorization: token
   }
 }
+const userName = ref('')
 const tempTodo = ref('')
 let tempTodoListData = ref([])
 let todoListType = ref('')
@@ -47,7 +48,8 @@ function getToken() {
  */
 const checkOut = async () => {
   try {
-    await axios.get(`${apiPath}/users/checkout`, apiKeyAuth)
+    const response = await axios.get(`${apiPath}/users/checkout`, apiKeyAuth)
+    userName.value = response.data.nickname
   } catch (error) {
     swalMessage({
       type: 'error',
@@ -181,7 +183,7 @@ onMounted(() => {
       <ul>
         <li class="todo_sm">
           <RouterLink to="/todoList" class="formControls_btnLink"
-            ><span>王小明的代辦</span></RouterLink
+            ><span>{{ userName }}的代辦</span></RouterLink
           >
         </li>
         <li><a href="#loginPage" @click.prevent="signOut">登出</a></li>
