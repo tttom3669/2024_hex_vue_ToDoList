@@ -100,7 +100,7 @@ const addToDo = async () => {
       apiKeyAuth
     )
     tempTodo.value = ''
-    getToDo(todoListType)
+    getToDo(todoListType.value)
   } catch (error) {
     console.log(error)
   }
@@ -126,7 +126,7 @@ async function getToDo(status = 'all') {
 const toggleToDo = async (id) => {
   try {
     await axios.patch(`${apiPath}/todos/${id}/toggle`, {}, apiKeyAuth)
-    getToDo(todoListType)
+    getToDo(todoListType.value)
   } catch (error) {
     console.log(error)
   }
@@ -139,7 +139,7 @@ const toggleToDo = async (id) => {
 const deleteToDo = async (id) => {
   try {
     await axios.delete(`${apiPath}/todos/${id}`, apiKeyAuth)
-    getToDo(todoListType)
+    getToDo(todoListType.value)
   } catch (error) {
     console.log(error)
   }
@@ -171,7 +171,7 @@ const switchToDoStatus = (status) => {
 
 onMounted(() => {
   checkOut()
-  getToDo(todoListType)
+  getToDo(todoListType.value)
 })
 </script>
 
