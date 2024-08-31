@@ -2,10 +2,16 @@
 import axios from 'axios'
 import { ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
-const signInData = ref({})
-const apiPath = 'https://todolist-api.hexschool.io'
 import Swal from 'sweetalert2'
 
+const apiPath = 'https://todolist-api.hexschool.io'
+const signInData = ref({})
+const router = useRouter()
+
+/**
+ * swal 提示訊息
+ * @param param0
+ */
 const swalMessage = ({ type, text }) => {
   Swal.fire({
     title: '訊息',
@@ -14,8 +20,10 @@ const swalMessage = ({ type, text }) => {
     confirmButtonText: '關閉'
   })
 }
-const router = useRouter()
 
+/**
+ * 登入
+ */
 const signIn = async () => {
   try {
     const response = await axios.post(`${apiPath}/users/sign_in`, {

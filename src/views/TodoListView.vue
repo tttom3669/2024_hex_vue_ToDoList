@@ -7,19 +7,29 @@ import { useRouter, RouterLink } from 'vue-router'
 const router = useRouter()
 const apiPath = 'https://todolist-api.hexschool.io'
 
-const swalMessage = ({ type, text }) => {
+const token = getToken()
+const apiKeyAuth = {
+  headers: {
+    Authorization: token
+  }
+}
+const tempTodo = ref('')
+let tempTodoListData = ref([])
+let todoListType = ref('')
+let toDoListCount = ref(0)
+let filterToDoData = ref([])
+
+/**
+ * swal 提示訊息
+ * @param param0
+ */
+function swalMessage({ type, text }) {
   Swal.fire({
     title: '訊息',
     text: text,
     icon: type,
     confirmButtonText: '關閉'
   })
-}
-const token = getToken()
-const apiKeyAuth = {
-  headers: {
-    Authorization: token
-  }
 }
 
 /**
@@ -75,30 +85,25 @@ const signOut = async () => {
   }
 }
 
-const tempTodo = ref('')
 /**
  * 新增待辦
  */
 const addToDo = async () => {
   try {
-    const response = await axios.post(
+    await axios.post(
       `${apiPath}/todos/`,
       {
         content: tempTodo.value
       },
       apiKeyAuth
     )
-    console.log(response)
+
     getToDo()
   } catch (error) {
     console.log(error)
   }
 }
 
-let tempTodoListData = ref([])
-let todoListType = ref('')
-let toDoListCount = ref(0)
-let filterToDoData = ref([])
 /**
  * 取得待辦
  */
@@ -106,35 +111,42 @@ async function getToDo(status = 'all') {
   try {
     const response = await axios.get(`${apiPath}/todos/`, apiKeyAuth)
     tempTodoListData.value = [...response.data.data]
-    // checkedToDoCount.value = tempTodoListData.value.filter((todo) => !todo.status).length
     switchToDoStatus(status)
-
-    console.log(response)
   } catch (error) {
     console.log(error)
   }
 }
 
+/**
+ * 待辦事項切換完成狀態
+ * @param 待辦事項id
+ */
 const toggleToDo = async (id) => {
   try {
-    const response = await axios.patch(`${apiPath}/todos/${id}/toggle`, {}, apiKeyAuth)
-    console.log(response)
+    await axios.patch(`${apiPath}/todos/${id}/toggle`, {}, apiKeyAuth)
     getToDo()
   } catch (error) {
     console.log(error)
   }
 }
 
+/**
+ * 刪除待辦事項
+ * @param 待辦事項id
+ */
 const deleteToDo = async (id) => {
   try {
-    const response = await axios.delete(`${apiPath}/todos/${id}`, apiKeyAuth)
-    console.log(response)
+    await axios.delete(`${apiPath}/todos/${id}`, apiKeyAuth)
     getToDo()
   } catch (error) {
     console.log(error)
   }
 }
 
+/**
+ * 切換待辦事項清單狀態
+ * @param status
+ */
 const switchToDoStatus = (status) => {
   todoListType.value = status
 
@@ -154,17 +166,6 @@ const switchToDoStatus = (status) => {
       break
   }
 }
-
-// function changeToDoListCount(){
-//   switch(todoListType){
-//     case 'checked':
-
-//     break
-//     case 'unchecked':
-//     case 'all':
-//     break
-//   }
-// }
 
 onMounted(() => {
   checkOut()

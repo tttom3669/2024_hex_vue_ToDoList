@@ -8,6 +8,10 @@ const signUpData = ref({})
 const apiPath = 'https://todolist-api.hexschool.io'
 const router = useRouter()
 
+/**
+ * swal 提示訊息
+ * @param param0
+ */
 const swalMessage = ({ type, text }) => {
   Swal.fire({
     title: '訊息',
@@ -17,8 +21,12 @@ const swalMessage = ({ type, text }) => {
   })
 }
 
+/**
+ * 註冊
+ */
 const signUp = async () => {
   try {
+    // 再次輸入密碼的錯誤判斷
     if (signUpData.value.password && signUpData.value.password.length >= 6) {
       if (!signUpData.value.password_checked) {
         swalMessage({ type: 'error', text: '請再次輸入密碼' })
@@ -30,12 +38,12 @@ const signUp = async () => {
       }
     }
 
-    const response = await axios.post(`${apiPath}/users/sign_up`, {
+    await axios.post(`${apiPath}/users/sign_up`, {
       email: signUpData.value.email,
       password: signUpData.value.password,
       nickname: signUpData.value.nickname
     })
-    console.log(response)
+
     swalMessage({ type: 'success', text: '註冊成功' })
     router.push('/')
   } catch (error) {
