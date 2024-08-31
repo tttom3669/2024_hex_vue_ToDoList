@@ -178,7 +178,7 @@ onMounted(() => {
 <template>
   <!-- ToDo List -->
   <div id="todoListPage" class="bg-half">
-    <nav>
+    <nav class="mb-48px">
       <h1><a href="#">ONLINE TODO LIST</a></h1>
       <ul>
         <li class="todo_sm">
@@ -197,7 +197,7 @@ onMounted(() => {
             <i class="fa fa-plus"></i>
           </a>
         </div>
-        <div class="todoList_list">
+        <div class="todoList_list" v-if="tempTodoListData.length">
           <ul class="todoList_tab">
             <li>
               <a
@@ -225,7 +225,7 @@ onMounted(() => {
             </li>
           </ul>
           <div class="todoList_items">
-            <ul class="todoList_item" v-if="tempTodoListData.length">
+            <ul class="todoList_item">
               <li v-for="todo in filterToDoData" :key="todo.id">
                 <label class="todoList_label">
                   <input
@@ -241,11 +241,18 @@ onMounted(() => {
                 </a>
               </li>
             </ul>
-            <p class="todoList_empty" v-else>目前尚無待辦事項</p>
             <div class="todoList_statistics">
               <p>{{ toDoListCount }} 個{{ todoListType === 'checked' ? '已' : '待' }}完成項目</p>
             </div>
           </div>
+        </div>
+        <div v-else>
+          <p class="todoList__empty-title">目前尚無待辦事項</p>
+          <img
+            class="todoList__empty-img"
+            src="https://raw.githubusercontent.com/hexschool/2022-web-layout-training/main/todolist/empty%201.png"
+            alt="empty-img"
+          />
         </div>
       </div>
     </div>
