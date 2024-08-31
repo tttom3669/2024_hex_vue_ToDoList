@@ -15,10 +15,10 @@ const apiKeyAuth = {
 }
 const userName = ref('')
 const tempTodo = ref('')
-let tempTodoListData = ref([])
-let todoListType = ref('')
-let toDoListCount = ref(0)
-let filterToDoData = ref([])
+const tempTodoListData = ref([])
+const todoListType = ref('')
+const toDoListCount = ref(0)
+const filterToDoData = ref([])
 
 /**
  * swal 提示訊息
@@ -99,7 +99,7 @@ const addToDo = async () => {
       },
       apiKeyAuth
     )
-
+    tempTodo.value = ''
     getToDo()
   } catch (error) {
     console.log(error)
